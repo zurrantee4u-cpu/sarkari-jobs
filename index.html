@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarkari Job Portal 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; color: #1a1a2e; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 0; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 42px; height: 42px; background: #e94560; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .logo-text h1 { font-size: 18px; font-weight: 700; }
+  .logo-text p { font-size: 11px; opacity: 0.7; }
+  .live-badge { background: #e94560; color: white; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+  /* Ticker */
+  .ticker { background: #e94560; padding: 7px 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-block; animation: scroll 40s linear infinite; }
+  .ticker-inner span { margin: 0 40px; font-size: 13px; font-weight: 500; color: white; }
+  @keyframes scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  /* Stats */
+  .stats-bar { display: flex; justify-content: space-around; padding: 12px 20px; background: rgba(255,255,255,0.07); border-top: 1px solid rgba(255,255,255,0.1); }
+  .stat { text-align: center; }
+  .stat-num { font-size: 20px; font-weight: 700; color: #e94560; }
+  .stat-label { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Search */
+  .search-section { background: white; padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .search-box { display: flex; gap: 8px; margin-bottom: 10px; }
+  .search-box input { flex: 1; padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; }
+  .search-box input:focus { border-color: #e94560; }
+  .search-box button { background: #e94560; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn { padding: 6px 14px; border: 1.5px solid #e2e8f0; border-radius: 20px; font-size: 12px; background: white; cursor: pointer; transition: all 0.2s; color: #555; }
+  .filter-btn.active, .filter-btn:hover { background: #e94560; color: white; border-color: #e94560; }
+
+  /* Jobs Grid */
+  .container { max-width: 900px; margin: 0 auto; padding: 16px; }
+  .section-title { font-size: 16px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .job-grid { display: grid; gap: 12px; }
+
+  .job-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #e94560; transition: transform 0.2s, box-shadow 0.2s; }
+  .job-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+  .job-card.wb { border-left-color: #0f3460; }
+  .job-card.central { border-left-color: #e94560; }
+
+  .job-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .job-title { font-size: 15px; font-weight: 700; color: #1a1a2e; line-height: 1.3; }
+  .job-org { font-size: 12px; color: #666; margin-top: 2px; }
+  .tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }
+  .tag-wb { background: #e8f4fd; color: #0f3460; }
+  .tag-central { background: #fde8ec; color: #c0392b; }
+  .tag-state { background: #e8fdf0; color: #1a6b3c; }
+
+  .job-details { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  .detail-chip { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #555; background: #f7f8fa; padding: 4px 8px; border-radius: 6px; }
+  .detail-chip .icon { font-size: 13px; }
+
+  .job-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; }
+  .deadline { font-size: 12px; color: #e94560; font-weight: 600; }
+  .apply-btn { background: #1a1a2e; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+  .apply-btn:hover { background: #e94560; }
+
+  .no-results { text-align: center; padding: 40px 20px; color: #888; }
+  .no-results p { font-size: 16px; }
+
+  /* Footer */
+  footer { background: #1a1a2e; color: white; text-align: center; padding: 20px; margin-top: 20px; font-size: 12px; opacity: 0.8; }
+
+  @media(max-width:600px){
+    .header-top { flex-direction: column; gap: 8px; text-align: center; }
+    .stats-bar { gap: 12px; }
+    .job-header { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon">🏛️</div>
+      <div class="logo-text">
+        <h1>Sarkari Job Portal</h1>
+        <p>Central &amp; State Government Jobs 2026</p>
+      </div>
+    </div>
+    <span class="live-badge">● LIVE April 2026</span>
+  </div>
+
+  <div class="ticker">
+    <div class="ticker-inner" id="ticker-text"></div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">20</div><div class="stat-label">Active Jobs</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">WB Jobs</div></div>
+    <div class="stat"><div class="stat-num">1200+</div><div class="stat-label">Vacancies</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">Apply Online</div></div>
+  </div>
+</div>
+
+<div class="search-section">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Job dhundo... (e.g. Railway, Police, Bank)" oninput="filterJobs()">
+    <button onclick="filterJobs()">Search</button>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all', this)">Sab Jobs</button>
+    <button class="filter-btn" onclick="setFilter('wb', this)">West Bengal</button>
+    <button class="filter-btn" onclick="setFilter('central', this)">Central Govt</button>
+    <button class="filter-btn" onclick="setFilter('state', this)">Other State</button>
+    <button class="filter-btn" onclick="setFilter('10th', this)">10th Pass</button>
+    <button class="filter-btn" onclick="setFilter('graduate', this)">Graduate</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-title">📋 Latest Sarkari Jobs — April 2026</div>
+  <div class="job-grid" id="jobGrid"></div>
+  <div class="no-results" id="noResults" style="display:none;">
+    <p>😔 Koi job nahi mili</p>
+    <p style="font-size:13px;margin-top:6px;">Alag keyword try karein</p>
+  </div>
+</div>
+
+<footer>
+  © 2026 Sarkari Job Portal | Sirf official government websites se links | Free service
+</footer>
+
+<script>
+const jobs = [
+  {
+    title: "Group D Railway Recruitment",
+    org: "Railway Recruitment Board (RRB)",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "103769 Posts",
+    salary: "₹18,000–22,000/month",
+    qualification: "10th Pass",
+    lastDate: "30 April 2026",
+    location: "All India",
+    keywords: ["railway","group d","10th","rrrb","central"],
+    applyLink: "https://www.rrbapply.gov.in"
+  },
+  {
+    title: "WBPSC Clerkship Exam 2026",
+    org: "West Bengal Public Service Commission",
+    tag: "wb", tagLabel: "West Bengal",
+    vacancies: "6000+ Posts",
+    salary: "₹22,000–26,000/month",
+    qualification: "Graduate",
+    lastDate: "15 May 2026",
+    location: "West Bengal",
+    keywords: ["wbpsc","clerk","west bengal","wb","graduate","psc"],
+    applyLink: "https://www.pscwbapplication.in"
+  },
+  {
+    title: "SSC CHSL 2026",
+    org: "Staff Selection Commission",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "3712 Posts",
+    salary: "₹25,500–81,100/month",
+    qualification: "12th Pass",
+    lastDate: "20 April 2026",
+    location: "All India",
+    keywords: ["ssc","chsl","12th","central","staff selection"],
+    applyLink: "https://ssc.nic.in"
+  },
+  {
+    title: "IBPS PO 2026",
+    org: "Institute of Banking Personnel Selection",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "4455 Posts",
+    salary: "₹36,000–63,840/month",
+    qualification: "Graduate",
+    lastDate: "1 May 2026",
+    location: "All India",
+    keywords: ["ibps","po","bank","banking","graduate","central"],
+    applyLink: "https://www.ibps.in"
+  },
+  {
+    title: "WB Police Constable Recruitment",
+    org: "West Bengal Police Recruitment Board",
+    tag: "wb", tagLabel: "West Bengal",
+    vacancies: "1200 Posts",
+    salary: "₹22,700–58,500/month",
+    qualification: "10th Pass",
+    lastDate: "25 April 2026",
+    location: "West Bengal",
+    keywords: ["wb police","police","west bengal","constable","10th"],
+    applyLink: "https://wbpolice.gov.in"
+  },
+  {
+    title: "UPSC Civil Services 2026",
+    org: "Union Public Service Commission",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "1056 Posts",
+    salary: "₹56,100–2,50,000/month",
+    qualification: "Graduate",
+    lastDate: "5 May 2026",
+    location: "All India",
+    keywords: ["upsc","ias","ips","civil services","graduate","central"],
+    applyLink: "https://upsc.gov.in"
+  },
+  {
+    title: "WBSSC Group C & D 2026",
+    org: "West Bengal School Service Commission",
+    tag: "wb", tagLabel: "West Bengal",
+    vacancies: "800 Posts",
+    salary: "₹18,000–40,000/month",
+    qualification: "8th–12th Pass",
+    lastDate: "10 May 2026",
+    location: "West Bengal",
+    keywords: ["wbssc","school","west bengal","wb","group c","group d","10th"],
+    applyLink: "https://www.westbengalssc.com"
+  },
+  {
+    title: "Indian Army Agniveer 2026",
+    org: "Indian Army",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "25000 Posts",
+    salary: "₹30,000–40,000/month",
+    qualification: "10th / 12th Pass",
+    lastDate: "30 April 2026",
+    location: "All India",
+    keywords: ["army","agniveer","agneepath","10th","12th","central","defence"],
+    applyLink: "https://joinindianarmy.nic.in"
+  },
+  {
+    title: "SBI Clerk (Junior Associate) 2026",
+    org: "State Bank of India",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "13735 Posts",
+    salary: "₹26,000–34,000/month",
+    qualification: "Graduate",
+    lastDate: "18 April 2026",
+    location: "All India",
+    keywords: ["sbi","bank","clerk","banking","graduate","central"],
+    applyLink: "https://sbi.co.in/careers"
+  },
+  {
+    title: "WB Health Department Staff Nurse",
+    org: "West Bengal Health Recruitment Board",
+    tag: "wb", tagLabel: "West Bengal",
+    vacancies: "450 Posts",
+    salary: "₹27,000–45,000/month",
+    qualification: "B.Sc Nursing / GNM",
+    lastDate: "28 April 2026",
+    location: "West Bengal",
+    keywords: ["wb health","nurse","nursing","west bengal","wb","gnm"],
+    applyLink: "https://wbhrb.in"
+  },
+  {
+    title: "SSC GD Constable 2026",
+    org: "Staff Selection Commission",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "39481 Posts",
+    salary: "₹21,700–69,100/month",
+    qualification: "10th Pass",
+    lastDate: "22 April 2026",
+    location: "All India",
+    keywords: ["ssc","gd","constable","10th","central","paramilitary"],
+    applyLink: "https://ssc.nic.in"
+  },
+  {
+    title: "BPSC 70th Combined Exam",
+    org: "Bihar Public Service Commission",
+    tag: "state", tagLabel: "State Govt",
+    vacancies: "1929 Posts",
+    salary: "₹35,000–80,000/month",
+    qualification: "Graduate",
+    lastDate: "12 May 2026",
+    location: "Bihar",
+    keywords: ["bpsc","bihar","graduate","state","psc"],
+    applyLink: "https://bpsc.bih.nic.in"
+  },
+  {
+    title: "India Post GDS Recruitment 2026",
+    org: "India Post (Department of Posts)",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "44228 Posts",
+    salary: "₹12,000–29,380/month",
+    qualification: "10th Pass",
+    lastDate: "5 May 2026",
+    location: "All India",
+    keywords: ["post office","gds","india post","postal","10th","central"],
+    applyLink: "https://indiapostgdsonline.gov.in"
+  },
+  {
+    title: "NVS Non-Teaching Staff 2026",
+    org: "Navodaya Vidyalaya Samiti",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "1377 Posts",
+    salary: "₹19,900–63,200/month",
+    qualification: "10th / Graduate",
+    lastDate: "8 May 2026",
+    location: "All India",
+    keywords: ["nvs","navodaya","school","10th","graduate","central"],
+    applyLink: "https://navodaya.gov.in"
+  },
+  {
+    title: "MPSC State Service 2026",
+    org: "Maharashtra Public Service Commission",
+    tag: "state", tagLabel: "State Govt",
+    vacancies: "824 Posts",
+    salary: "₹38,600–1,22,800/month",
+    qualification: "Graduate",
+    lastDate: "20 May 2026",
+    location: "Maharashtra",
+    keywords: ["mpsc","maharashtra","graduate","state","psc"],
+    applyLink: "https://mpsc.gov.in"
+  },
+  {
+    title: "CRPF Head Constable 2026",
+    org: "Central Reserve Police Force",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "1458 Posts",
+    salary: "₹25,500–81,100/month",
+    qualification: "12th Pass",
+    lastDate: "16 April 2026",
+    location: "All India",
+    keywords: ["crpf","constable","paramilitary","12th","central","police"],
+    applyLink: "https://crpf.gov.in"
+  },
+  {
+    title: "WB Madhyamik TET Teacher 2026",
+    org: "West Bengal Board of Primary Education",
+    tag: "wb", tagLabel: "West Bengal",
+    vacancies: "7000 Posts",
+    salary: "₹27,000–42,000/month",
+    qualification: "Graduate + D.El.Ed / B.Ed",
+    lastDate: "2 May 2026",
+    location: "West Bengal",
+    keywords: ["tet","teacher","wb","west bengal","primary","education","bed"],
+    applyLink: "https://wbbpe.org"
+  },
+  {
+    title: "TNPSC Group 4 Services 2026",
+    org: "Tamil Nadu Public Service Commission",
+    tag: "state", tagLabel: "State Govt",
+    vacancies: "2165 Posts",
+    salary: "₹20,600–65,500/month",
+    qualification: "12th Pass",
+    lastDate: "25 April 2026",
+    location: "Tamil Nadu",
+    keywords: ["tnpsc","tamil nadu","group 4","12th","state"],
+    applyLink: "https://tnpsc.gov.in"
+  },
+  {
+    title: "ESIC MTS & Steno 2026",
+    org: "Employees State Insurance Corporation",
+    tag: "central", tagLabel: "Central Govt",
+    vacancies: "3844 Posts",
+    salary: "₹18,000–56,900/month",
+    qualification: "10th / 12th Pass",
+    lastDate: "30 April 2026",
+    location: "All India",
+    keywords: ["esic","mts","stenographer","10th","12th","central"],
+    applyLink: "https://esic.nic.in"
+  },
+  {
+    title: "Kolkata Municipal Corporation Recruitment",
+    org: "Kolkata Municipal Corporation (KMC)",
+    tag: "wb", tagLabel: "West Bengal",
+    vacancies: "300 Posts",
+    salary: "₹18,000–48,000/month",
+    qualification: "8th–Graduate (post wise)",
+    lastDate: "6 May 2026",
+    location: "Kolkata, West Bengal",
+    keywords: ["kmc","kolkata","municipal","west bengal","wb","graduate","10th"],
+    applyLink: "https://www.kmcgov.in"
+  }
+];
+
+let currentFilter = 'all';
+
+function buildTicker() {
+  const inner = document.getElementById('ticker-text');
+  let text = jobs.map(j => `🔔 ${j.title} — ${j.vacancies} | Last Date: ${j.lastDate}`).join('');
+  text += text;
+  inner.innerHTML = jobs.map(j => `<span>🔔 ${j.title} — ${j.vacancies} | Last Date: ${j.lastDate}</span>`).join('') +
+                    jobs.map(j => `<span>🔔 ${j.title} — ${j.vacancies} | Last Date: ${j.lastDate}</span>`).join('');
+}
+
+function tagClass(tag) {
+  if(tag==='wb') return 'tag-wb';
+  if(tag==='central') return 'tag-central';
+  return 'tag-state';
+}
+
+function cardClass(tag) {
+  return tag==='wb' ? 'wb' : tag==='central' ? 'central' : '';
+}
+
+function renderJobs(list) {
+  const grid = document.getElementById('jobGrid');
+  const noRes = document.getElementById('noResults');
+  if(list.length === 0) {
+    grid.innerHTML = '';
+    noRes.style.display = 'block';
+    return;
+  }
+  noRes.style.display = 'none';
+  grid.innerHTML = list.map(j => `
+    <div class="job-card ${cardClass(j.tag)}">
+      <div class="job-header">
+        <div>
+          <div class="job-title">${j.title}</div>
+          <div class="job-org">${j.org}</div>
+        </div>
+        <span class="tag ${tagClass(j.tag)}">${j.tagLabel}</span>
+      </div>
+      <div class="job-details">
+        <span class="detail-chip"><span class="icon">👥</span>${j.vacancies}</span>
+        <span class="detail-chip"><span class="icon">💰</span>${j.salary}</span>
+        <span class="detail-chip"><span class="icon">🎓</span>${j.qualification}</span>
+        <span class="detail-chip"><span class="icon">📍</span>${j.location}</span>
+      </div>
+      <div class="job-footer">
+        <span class="deadline">⏰ Last Date: ${j.lastDate}</span>
+        <a class="apply-btn" href="${j.applyLink}" target="_blank" rel="noopener">Apply Now →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterJobs();
+}
+
+function filterJobs() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  let filtered = jobs;
+
+  if(currentFilter === 'wb') filtered = filtered.filter(j => j.tag === 'wb');
+  else if(currentFilter === 'central') filtered = filtered.filter(j => j.tag === 'central');
+  else if(currentFilter === 'state') filtered = filtered.filter(j => j.tag === 'state');
+  else if(currentFilter === '10th') filtered = filtered.filter(j => j.qualification.toLowerCase().includes('10th'));
+  else if(currentFilter === 'graduate') filtered = filtered.filter(j => j.qualification.toLowerCase().includes('graduate') || j.qualification.toLowerCase().includes('b.sc') || j.qualification.toLowerCase().includes('b.ed'));
+
+  if(query) {
+    filtered = filtered.filter(j =>
+      j.title.toLowerCase().includes(query) ||
+      j.org.toLowerCase().includes(query) ||
+      j.location.toLowerCase().includes(query) ||
+      j.keywords.some(k => k.includes(query))
+    );
+  }
+
+  renderJobs(filtered);
+}
+
+buildTicker();
+renderJobs(jobs);
+</script>
+</body>
+</html>
